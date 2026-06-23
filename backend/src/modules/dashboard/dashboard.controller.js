@@ -100,21 +100,21 @@ export const adminDashboard = async (req, res) => {
   }
 };
 
-export const activeUsers = await QueryHistory.aggregate([
-  {
-    $group: {
-      _id: "$user",
-      total: {
-        $sum: 1,
+export const activeUsers = async () => {
+  return await QueryHistory.aggregate([
+    {
+      $group: {
+        _id: "$user",
+        total: { $sum: 1 },
       },
     },
-  },
-  {
-    $sort: {
-      total: -1,
+    {
+      $sort: {
+        total: -1,
+      },
     },
-  },
-  {
-    $limit: 5,
-  },
-]);
+    {
+      $limit: 5,
+    },
+  ]);
+};

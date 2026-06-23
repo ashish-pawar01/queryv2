@@ -1,5 +1,5 @@
 import User from "./user.model.js";
-import Role from "../rbac/role.model.js";
+import Role from "../roles/role.model.js";
 import asyncHandler from "../../core/asyncHandler.js";
 import ApiResponse from "../../core/ApiResponse.js";
 
@@ -147,7 +147,18 @@ export const updateUser = async (req, res) => {
 
     if (lastName) user.lastName = lastName;
 
-    if (roleId) user.role = roleId;
+    if (roleId) {
+      const role = await Role.findById(roleId);
+
+      if (!role) {
+        return res.status(404).json({
+          success: false,
+          message: "Role not found",
+        });
+      }
+
+      user.role = roleId;
+    }
 
     await user.save();
 

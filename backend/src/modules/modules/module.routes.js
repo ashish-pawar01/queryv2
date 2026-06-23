@@ -10,6 +10,7 @@ import {
   updateModule,
   deleteModule,
   toggleModuleStatus,
+  getModuleQueries,
 } from "./module.controller.js";
 
 const router = express.Router();
@@ -19,6 +20,8 @@ router.post("/", protect, authorize("module.create"), createModule);
 router.get("/", protect, authorize("module.view"), getModules);
 
 router.get("/:id", protect, authorize("module.view"), getModuleById);
+
+router.get("/:id/queries", protect, getModuleQueries);
 
 router.put("/:id", protect, authorize("module.edit"), updateModule);
 

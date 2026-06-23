@@ -24,6 +24,14 @@ import {
 import { publishQuery, archiveQuery } from "./queryPublish.controller.js";
 
 import { rollbackVersion } from "./queryRollback.controller.js";
+import { cloneQuery } from "./queryClone.controller.js";
+import { previewQuery } from "./queryPreview.controller.js";
+import { getVersions } from "./queryVersion.controller.js";
+import {
+  bulkPublish,
+  bulkArchive,
+  bulkDelete,
+} from "./queryBulk.controller.js";
 
 const router = express.Router();
 
@@ -41,6 +49,18 @@ router.delete(
   authorize("query.delete"),
   deleteQueryDefinition,
 );
+
+router.post("/:id/clone", protect, cloneQuery);
+
+router.post("/:id/preview", protect, previewQuery);
+
+router.get("/:id/versions", protect, getVersions);
+
+router.post("/bulk-publish", protect, bulkPublish);
+
+router.post("/bulk-archive", protect, bulkArchive);
+
+router.post("/bulk-delete", protect, bulkDelete);
 
 router.patch("/:id/assign-role", protect, authorize("query.edit"), assignRole);
 

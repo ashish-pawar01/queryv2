@@ -25,6 +25,8 @@ const fieldSchema = new mongoose.Schema(
         "MULTISELECT",
         "BOOLEAN",
         "URL",
+        "ARRAY",
+        "OBJECT",
       ],
     },
 
@@ -33,6 +35,40 @@ const fieldSchema = new mongoose.Schema(
     required: Boolean,
 
     defaultValue: mongoose.Schema.Types.Mixed,
+
+    options: [
+      {
+        label: String,
+        value: mongoose.Schema.Types.Mixed,
+      },
+    ],
+
+    uiType: {
+      type: String,
+      enum: [
+        "INPUT",
+        "TEXTAREA",
+        "SELECT",
+        "MULTISELECT",
+        "TOGGLE",
+        "BUTTON_GROUP",
+        "RADIO",
+        "CHECKBOX",
+      ],
+    },
+
+    dynamicOptions: {
+      enabled: {
+        type: Boolean,
+        default: false,
+      },
+
+      sourceCollection: String,
+
+      labelField: String,
+
+      valueField: String,
+    },
 
     selectable: {
       type: Boolean,
@@ -185,6 +221,13 @@ const queryDefinitionSchema = new mongoose.Schema(
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+
+    deletedAt: Date,
+
+    deletedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   {

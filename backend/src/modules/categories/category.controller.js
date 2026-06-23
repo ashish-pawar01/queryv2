@@ -1,4 +1,6 @@
 import Category from "./category.model.js";
+import Module from "../modules/module.model.js";
+import QueryDefinition from "../queryDefinitions/queryDefinition.model.js";
 
 export const createCategory = async (req, res) => {
   try {
@@ -188,6 +190,44 @@ export const toggleCategoryStatus = async (req, res) => {
     res.json({
       success: true,
       message: "Status updated",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getCategoryModules = async (req, res) => {
+  try {
+    const modules = await Module.find({
+      category: req.params.id,
+      isDeleted: false,
+    });
+
+    res.json({
+      success: true,
+      data: modules,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getModuleQueries = async (req, res) => {
+  try {
+    const queries = await QueryDefinition.find({
+      module: req.params.id,
+      isDeleted: false,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: queries,
     });
   } catch (error) {
     res.status(500).json({

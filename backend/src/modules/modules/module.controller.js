@@ -1,4 +1,5 @@
 import Module from "./module.model.js";
+import QueryDefinition from "../queryDefinitions/queryDefinition.model.js";
 
 export const createModule = async (req, res) => {
   try {
@@ -151,6 +152,10 @@ export const deleteModule = async (req, res) => {
 
     moduleData.isDeleted = true;
 
+    moduleData.deletedAt = new Date();
+
+    moduleData.deletedBy = req.user._id;
+
     await moduleData.save();
 
     res.json({
@@ -183,6 +188,29 @@ export const toggleModuleStatus = async (req, res) => {
     res.json({
       success: true,
       message: "Status updated",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getModuleQueries = async (req, res) => {
+  try {
+    const queries = await QueryDefinition.find({
+      module: req.params.id,
+      status: "PUBLISHED",
+      isDeleted: false,
+    })
+      .select("name description version status category module")
+      .sort({ updatedAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: queries.length,
+      data: queries,
     });
   } catch (error) {
     res.status(500).json({

@@ -1,10 +1,9 @@
 import User from "../users/user.model.js";
-import { generateToken } from "../../utils/jwt.js";
-import { setAuthCookie, clearAuthCookie } from "../../utils/cookies.js";
-import Permission from "../rbac/permission.model.js";
-import Role from "../rbac/role.model.js";
+import { setAuthCookies, clearAuthCookies } from "../../utils/cookies.js";
+import Permission from "../permissions/permission.model.js";
+import Role from "../roles/role.model.js";
 import { generateAccessToken, generateRefreshToken } from "../../utils/jwt.js";
-import { setAuthCookies } from "../../utils/cookies.js";
+import jwt from "jsonwebtoken";
 
 /**
  * @swagger
@@ -116,8 +115,8 @@ export const refresh = async (req, res) => {
       });
     }
 
-    const decoded = verifyToken(refreshToken, process.env.JWT_REFRESH_SECRET);
-
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+    
     const user = await User.findById(decoded.id);
 
     if (!user || user.refreshToken !== refreshToken) {

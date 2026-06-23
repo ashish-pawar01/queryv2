@@ -50,9 +50,6 @@ const categorySchema = new mongoose.Schema(
 
 categorySchema.index({
   name: 1,
-});
-
-categorySchema.index({
   code: 1,
 });
 

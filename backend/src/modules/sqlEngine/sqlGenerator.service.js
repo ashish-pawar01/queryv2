@@ -1,18 +1,10 @@
 import { escapeSqlValue } from "../../core/sqlEscape.js";
 
-const escapeSqlValue = (value) => {
-  if (typeof value === "number") {
-    return value;
-  }
-
-  return `'${value}'`;
-};
-
 const generateManualSql = (queryDefinition, payload) => {
   let sql = queryDefinition.manualSql;
 
   Object.entries(payload).forEach(([key, value]) => {
-    sql = sql.replaceAll(`{{${key}}}`, value);
+    sql = sql.replaceAll(`{{${key}}}`, escapeSqlValue(value));
   });
 
   return sql;
@@ -30,6 +22,10 @@ const generateInsertSql = (queryDefinition, payload) => {
       values.push(escapeSqlValue(payload[field.fieldKey]));
     }
   });
+
+  if (!columns.length) {
+    throw new Error("No fields supplied for insert");
+  }
 
   return `
 INSERT INTO ${queryDefinition.targetTable}
@@ -65,6 +61,12 @@ const generateUpdateSql = (queryDefinition, payload) => {
       );
     }
   });
+  if (!whereClause.length) {
+    throw new Error("Update query requires at least one condition");
+  }
+  if (!setClause.length) {
+    throw new Error("No update fields supplied");
+  }
 
   return `
 UPDATE ${queryDefinition.targetTable}
@@ -89,6 +91,9 @@ const generateDeleteSql = (queryDefinition, payload) => {
       );
     }
   });
+  if (!whereClause.length) {
+    throw new Error("Delete query requires at least one condition");
+  }
 
   return `
 DELETE FROM ${queryDefinition.targetTable}

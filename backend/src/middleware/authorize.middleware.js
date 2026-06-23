@@ -1,32 +1,29 @@
 const authorize =
   (...permissions) =>
   (req, res, next) => {
-    if (
-      req.user.role.name ===
-      "SUPER_ADMIN"
-    ) {
+    if (req.user.role.name === "SUPER_ADMIN") {
       return next();
     }
 
-    const userPermissions =
-      req.user.role.permissions.map(
-        (permission) =>
-          permission.name
-      );
+    if (!req.user || !req.user.role || !req.user.role.permissions) {
+      return res.status(403).json({
+        success: false,
+        message: "Permission denied",
+      });
+    }
 
-    const allowed =
-      permissions.some(
-        (permission) =>
-          userPermissions.includes(
-            permission
-          )
-      );
+    const userPermissions = req.user.role.permissions.map(
+      (permission) => permission.name,
+    );
+
+    const allowed = permissions.some((permission) =>
+      userPermissions.includes(permission),
+    );
 
     if (!allowed) {
       return res.status(403).json({
         success: false,
-        message:
-          "Permission denied"
+        message: "Permission denied",
       });
     }
 

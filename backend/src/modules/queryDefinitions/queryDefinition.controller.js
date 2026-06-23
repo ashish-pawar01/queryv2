@@ -70,7 +70,10 @@ export const getQueryDefinitionById = async (req, res) => {
 
 export const updateQueryDefinition = async (req, res) => {
   try {
-    const query = await QueryDefinition.findById(req.params.id);
+    const query = await QueryDefinition.findOne({
+      _id: req.params.id,
+      isDeleted: false,
+    });
 
     if (!query) {
       return res.status(404).json({
@@ -79,7 +82,14 @@ export const updateQueryDefinition = async (req, res) => {
       });
     }
 
-    const snapshot = JSON.parse(JSON.stringify(query));
+    const snapshot = {
+      name: query.name,
+      description: query.description,
+      queryType: query.queryType,
+      targetTable: query.targetTable,
+      fields: query.fields,
+      conditions: query.conditions,
+    };
 
     query.versions.push({
       versionNumber: query.currentVersion,
@@ -111,7 +121,10 @@ export const updateQueryDefinition = async (req, res) => {
 
 export const deleteQueryDefinition = async (req, res) => {
   try {
-    const query = await QueryDefinition.findById(req.params.id);
+    const query = await QueryDefinition.findOne({
+      _id: req.params.id,
+      isDeleted: false,
+    });
 
     if (!query) {
       return res.status(404).json({
@@ -121,6 +134,9 @@ export const deleteQueryDefinition = async (req, res) => {
     }
 
     query.isDeleted = true;
+    query.deletedAt = new Date();
+
+    query.deletedBy = req.user._id;
 
     await query.save();
 

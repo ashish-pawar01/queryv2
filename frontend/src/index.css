@@ -1,1 +1,56 @@
 @import "tailwindcss";
+
+:root {
+  --bg: #ffffff;
+  --card: #f8fafc;
+  --card-hover: #f1f5f9;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+}
+
+.dark {
+  --bg: #030712;
+  --card: #111827;
+  --card-hover: #1f2937;
+  --text: #f9fafb;
+  --muted: #94a3b8;
+  --border: #1f2937;
+
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+}
+
+.midnight {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --card-hover: #334155;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --border: #334155;
+
+  --primary: #60a5fa;
+  --primary-hover: #3b82f6;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: all 300ms ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 20px;
+}
