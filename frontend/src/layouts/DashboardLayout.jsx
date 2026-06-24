@@ -3,10 +3,10 @@ import Navbar from "../components/layout/Navbar";
 
 export default function DashboardLayout({ children }) {
   return (
-    <div className="flex">
+    <div className="flex min-h-screen">
       <Sidebar />
 
-      <div className="flex-1 min-h-screen">
+      <div className="flex-1">
         <Navbar />
 
         <main className="p-6">{children}</main>

@@ -52,12 +52,8 @@ const moduleSchema = new mongoose.Schema(
   },
 );
 
-moduleSchema.index({
-  category: 1,
-});
+moduleSchema.index({ category: 1, isDeleted: 1 }, { unique: true });
 
-moduleSchema.index({
-  code: 1,
-});
+moduleSchema.index({ code: 1, isDeleted: 1 }, { unique: true });
 
 export default mongoose.model("Module", moduleSchema);

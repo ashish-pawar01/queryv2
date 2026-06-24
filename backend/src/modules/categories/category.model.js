@@ -48,9 +48,8 @@ const categorySchema = new mongoose.Schema(
   },
 );
 
-categorySchema.index({
-  name: 1,
-  code: 1,
-});
+categorySchema.index({ name: 1, isDeleted: 1 }, { unique: true });
+
+categorySchema.index({ code: 1, isDeleted: 1 }, { unique: true });
 
 export default mongoose.model("Category", categorySchema);

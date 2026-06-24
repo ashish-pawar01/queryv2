@@ -4,7 +4,8 @@ export default function Card({ children, className = "" }) {
   return (
     <motion.div
       whileHover={{
-        y: -4,
+        y: -6,
+        scale: 1.01,
       }}
       transition={{
         duration: 0.2,
@@ -15,6 +16,8 @@ export default function Card({ children, className = "" }) {
         border-[var(--border)]
         rounded-2xl
         p-5
+        shadow-xl
+        hover:shadow-2xl
         shadow-sm
         hover:shadow-xl
         transition-all

@@ -8,8 +8,8 @@ export const createCategory = async (req, res) => {
 
     const exists = await Category.findOne({
       $or: [{ name }, { code }],
+      isDeleted: false,
     });
-
     if (exists) {
       return res.status(400).json({
         success: false,
@@ -228,6 +228,27 @@ export const getModuleQueries = async (req, res) => {
     res.status(200).json({
       success: true,
       data: queries,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getCategoryDropdown = async (req, res) => {
+  try {
+    const categories = await Category.find({
+      isDeleted: false,
+      status: "ACTIVE",
+    })
+      .select("name code")
+      .sort({ name: 1 });
+
+    res.json({
+      success: true,
+      data: categories,
     });
   } catch (error) {
     res.status(500).json({

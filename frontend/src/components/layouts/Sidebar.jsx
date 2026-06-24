@@ -1,95 +1,137 @@
-import {
-  LayoutDashboard,
-  FolderKanban,
-  Database,
-  PlayCircle,
-  ChevronLeft,
-} from "lucide-react";
-
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { Shield, Users } from "lucide-react";
+
+import {
+  LayoutDashboard,
+  FolderTree,
+  Boxes,
+  Database,
+  ChevronLeft,
+  ChevronRight,
+  History,
+  ClipboardList,
+  Settings,
+  KeyRound
+} from "lucide-react";
 
 const menuItems = [
   {
     name: "Dashboard",
-    path: "/",
     icon: LayoutDashboard,
+    path: "/",
+  },
+  {
+    name: "Categories",
+    icon: FolderTree,
+    path: "/categories",
   },
   {
     name: "Modules",
+    icon: Boxes,
     path: "/modules",
-    icon: FolderKanban,
   },
   {
-    name: "Queries",
-    path: "/queries",
+    name: "Query Definitions",
     icon: Database,
+    path: "/query-definitions",
   },
   {
-    name: "Run Queries",
-    path: "/run-queries",
-    icon: PlayCircle,
+    name: "Roles",
+    icon: Shield,
+    path: "/roles",
+  },
+  {
+    name: "Users",
+    icon: Users,
+    path: "/users",
+  },
+  {
+    name: "History",
+    icon: History,
+    path: "/history",
+  },
+  {
+    name: "Audit Logs",
+    icon: ClipboardList,
+    path: "/audit",
+  },
+  {
+    name: "Settings",
+    icon: Settings,
+    path: "/settings",
+  },
+  {
+    name: "Permissions",
+    icon: KeyRound,
+    path: "/permissions",
   },
 ];
 
 export default function Sidebar() {
-  const [collapsed, setCollapsed] =
-    useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <motion.aside
       animate={{
-        width: collapsed
-          ? 90
-          : 260,
+        width: collapsed ? 90 : 260,
       }}
       className="
-      h-screen
-      sticky
-      top-0
+      min-h-screen
       border-r
       border-[var(--border)]
       bg-[var(--card)]
       "
     >
-      <div className="p-4">
-        <button
-          onClick={() =>
-            setCollapsed(!collapsed)
-          }
-        >
-          <ChevronLeft />
+      <div
+        className="
+        h-20
+        px-5
+        flex
+        items-center
+        justify-between
+        "
+      >
+        {!collapsed && <h2 className="font-bold text-xl">Query Master</h2>}
+
+        <button onClick={() => setCollapsed(!collapsed)}>
+          {collapsed ? <ChevronRight /> : <ChevronLeft />}
         </button>
       </div>
 
       <nav className="px-3 space-y-2">
-        {menuItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) =>
-              `
-              flex
-              items-center
-              gap-3
-              p-3
-              rounded-xl
-              transition-all
-              ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "hover:bg-[var(--card-hover)]"
-              }
-              `
-            }
-          >
-            <item.icon size={20} />
+        {menuItems.map((item) => {
+          const Icon = item.icon;
 
-            {!collapsed &&
-              item.name}
-          </NavLink>
-        ))}
+          return (
+            <NavLink
+              key={item.name}
+              to={item.path}
+              className={({ isActive }) =>
+                `
+                  flex
+                  items-center
+                  gap-3
+                  px-4
+                  py-3
+                  rounded-xl
+                  transition-all
+
+                  ${
+                    isActive
+                      ? "bg-blue-600 text-white"
+                      : "hover:bg-[var(--card-hover)]"
+                  }
+                `
+              }
+            >
+              <Icon size={20} />
+
+              {!collapsed && item.name}
+            </NavLink>
+          );
+        })}
       </nav>
     </motion.aside>
   );

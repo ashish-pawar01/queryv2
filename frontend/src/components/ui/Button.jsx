@@ -6,9 +6,10 @@ export default function Button({
   ...props
 }) {
   const variants = {
-    primary: "bg-blue-600 hover:bg-blue-700 text-white",
+    primary:
+      "bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30",
 
-    secondary: "bg-slate-800 hover:bg-slate-700 text-white",
+    secondary: "bg-slate-700 hover:bg-slate-600 text-white",
 
     danger: "bg-red-600 hover:bg-red-700 text-white",
   };
@@ -23,6 +24,8 @@ export default function Button({
         transition-all
         duration-300
         font-medium
+        hover:scale-[1.02]
+        active:scale-[0.98]
         ${variants[variant]}
         ${className}
       `}

@@ -1,26 +1,29 @@
+import { Sun, Moon, Monitor } from "lucide-react";
+
 import { useTheme } from "../../context/ThemeContext";
 
 export default function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <select
-      value={theme}
-      onChange={(e) => setTheme(e.target.value)}
+    <div
       className="
-      px-3
-      py-2
-      rounded-xl
-      bg-[var(--card)]
-      border
-      border-[var(--border)]
+      flex
+      items-center
+      gap-2
       "
     >
-      <option value="light">Light</option>
+      <button onClick={() => setTheme("light")}>
+        <Sun size={18} />
+      </button>
 
-      <option value="dark">Dark</option>
+      <button onClick={() => setTheme("dark")}>
+        <Moon size={18} />
+      </button>
 
-      <option value="midnight">Midnight</option>
-    </select>
+      <button onClick={() => setTheme("midnight")}>
+        <Monitor size={18} />
+      </button>
+    </div>
   );
 }

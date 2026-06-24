@@ -11,6 +11,7 @@ import {
   deleteModule,
   toggleModuleStatus,
   getModuleQueries,
+  getModuleDropdown,
 } from "./module.controller.js";
 
 const router = express.Router();
@@ -22,6 +23,8 @@ router.get("/", protect, authorize("module.view"), getModules);
 router.get("/:id", protect, authorize("module.view"), getModuleById);
 
 router.get("/:id/queries", protect, getModuleQueries);
+
+router.get("/dropdown", protect, getModuleDropdown);
 
 router.put("/:id", protect, authorize("module.edit"), updateModule);
 

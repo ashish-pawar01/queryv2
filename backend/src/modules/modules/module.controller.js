@@ -219,3 +219,25 @@ export const getModuleQueries = async (req, res) => {
     });
   }
 };
+
+export const getModuleDropdown = async (req, res) => {
+  try {
+    const modules = await Module.find({
+      isDeleted: false,
+      status: "ACTIVE",
+    })
+      .select("name code category")
+      .populate("category", "name")
+      .sort({ name: 1 });
+
+    res.json({
+      success: true,
+      data: modules,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

@@ -12,6 +12,7 @@ import {
   toggleCategoryStatus,
   getCategoryModules,
   getModuleQueries,
+  getCategoryDropdown,
 } from "./category.controller.js";
 
 const router = express.Router();
@@ -25,6 +26,8 @@ router.get("/:id", protect, authorize("category.view"), getCategoryById);
 router.get("/:id/modules", protect, getCategoryModules);
 
 router.get("/:id/queries", protect, getModuleQueries);
+
+router.get("/dropdown", protect, getCategoryDropdown);
 
 router.put("/:id", protect, authorize("category.edit"), updateCategory);
 
